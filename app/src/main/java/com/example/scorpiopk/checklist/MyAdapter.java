@@ -3,6 +3,7 @@ package com.example.scorpiopk.checklist;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.scorpiopk.checklist.R;
@@ -18,10 +19,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     {
         // each data item is just a string in this case
         public TextView mTextView;
-        public ViewHolder(TextView v)
+        public LinearLayout mCellLayout;
+        public ViewHolder(LinearLayout v)
         {
             super(v);
-            mTextView = v;
+            mCellLayout = v;
+            mTextView = (TextView)mCellLayout.findViewById(R.id.text_view);
         }
     }
 
@@ -37,7 +40,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
                                                    int viewType)
     {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+
+        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_textview, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
