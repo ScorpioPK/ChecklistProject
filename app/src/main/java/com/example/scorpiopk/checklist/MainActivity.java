@@ -4,19 +4,81 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
 import com.example.scorpiopk.checklist.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends Activity
 {
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private Button mEditTextButton = null;
+    private EditText mEditText = null;
+    List<String> mDataset = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDataset = new ArrayList<>();
+        mDataset.add("First");
+        mDataset.add("Second");
+        mDataset.add("Third");
+
+        mEditText = (EditText) findViewById(R.id.edittext_view);
+        mEditText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                String text = mEditText.getText().toString();
+                if (text.length() >=3)
+                {
+                    //Add suggestions box.
+                    // Change main layout from Linear Layout to Relative Layout.
+                    // Add suggestion box under EditText, but don't link it in any way to the
+                    // RecyclerView. Make sure suggestions box is on top of RecyclerView
+                    // Items in suggestion box should be clickable.
+                    // When clicked, the text should be inserted in the EditText
+                    // It will NOT be inserted in the list directly(only after button is pressed.
+                    // When item is sent to the EditText, hide Suggestions box. Only show it again
+                    // after the text in EditText is changed.
+                }
+            }
+        });
+        mEditTextButton = (Button) findViewById(R.id.edittext_button);
+        mEditTextButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mAdapter.AddNewItem(mEditText.getText().toString());
+                mEditText.setText("");
+            }
+        });
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -28,8 +90,9 @@ public class MainActivity extends Activity
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        String[] myDataset = {"First", "Second", "Third"};
-        mAdapter = new MyAdapter(myDataset);
+
+        mAdapter = new MyAdapter(mDataset);
         mRecyclerView.setAdapter(mAdapter);
     }
+
 }

@@ -8,9 +8,12 @@ import android.widget.TextView;
 
 import com.example.scorpiopk.checklist.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
 {
-    private String[] mDataset;
+    private List<String> mDataset = null;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -29,9 +32,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(String[] myDataset)
+    public MyAdapter(List<String> myDataset)
     {
-        mDataset = myDataset;
+        mDataset = new ArrayList<>();
+        mDataset.addAll(myDataset);
     }
 
     // Create new views (invoked by the layout manager)
@@ -55,13 +59,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.mTextView.setText(mDataset[position]);
+        holder.mTextView.setText(mDataset.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount()
     {
-        return mDataset.length;
+        return mDataset.size();
+    }
+
+    public void AddNewItem(String item)
+    {
+        mDataset.add(item);
+        notifyDataSetChanged();
     }
 }
