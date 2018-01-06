@@ -1,14 +1,18 @@
 package com.example.scorpiopk.checklist;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.example.scorpiopk.checklist.R;
 
@@ -21,6 +25,8 @@ public class MainActivity extends Activity
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button mEditTextButton = null;
+    private Button mPlusButton = null;
+    LinearLayout mAddNewItemContainer = null;
     private EditText mEditText = null;
     List<String> mDataset = null;
 
@@ -35,7 +41,17 @@ public class MainActivity extends Activity
         mDataset.add("Second");
         mDataset.add("Third");
 
-        mEditText = (EditText) findViewById(R.id.edittext_view);
+        mAddNewItemContainer = (LinearLayout)findViewById(R.id.add_new_item_container);
+        mAddNewItemContainer.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                HideNewItemScreen();
+            }
+        });
+
+        mEditText = (EditText) mAddNewItemContainer.findViewById(R.id.edittext_view);
         mEditText.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -68,7 +84,7 @@ public class MainActivity extends Activity
                 }
             }
         });
-        mEditTextButton = (Button) findViewById(R.id.edittext_button);
+        mEditTextButton = (Button) mAddNewItemContainer.findViewById(R.id.edittext_button);
         mEditTextButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -76,6 +92,18 @@ public class MainActivity extends Activity
             {
                 mAdapter.AddNewItem(mEditText.getText().toString());
                 mEditText.setText("");
+                HideNewItemScreen();
+            }
+        });
+
+        mPlusButton = (Button) findViewById(R.id.plus_button);
+        mPlusButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                // Open new window on top to add new item in it.
+                ShowNewItemScreen();
             }
         });
 
@@ -95,4 +123,24 @@ public class MainActivity extends Activity
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    private void ShowNewItemScreen()
+    {
+        mAddNewItemContainer.setVisibility(View.VISIBLE);
+
+        InputMethodManager inputMethodManager =  (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInputFromWindow(mEditText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        mEditText.requestFocus();
+    }
+
+    private void HideNewItemScreen()
+    {
+        mAddNewItemContainer.setVisibility(View.GONE);
+        //hide keyboard
+        View view = this.getCurrentFocus();
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 }
