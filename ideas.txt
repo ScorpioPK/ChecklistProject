@@ -1,9 +1,25 @@
 Add ideas for the project here.
 
+Option 1:
 Have + button to insert a new item. In the list view it will create a new item, in the menu view it will create a new list.
 Pressing the + button will open a new screen on top of the present one (90% of screen, the other will be a little bit darkened).
 The item screen will have an item name with autocomplete, quantity, size, type of package (box, bag, pieces, can, etc.), measurement unit ( ml, l, g, kg, m, m2). All fields with options will be spinners. All fields need to fit in one screen. No scrolling. Also an Add button at the bottom. All fields except the name are optional. If left blank, they will not appear in the menu.
 The list screen will only have a name field.
+
+Problem: it feels bad having a pop up with the item addition. It doesn't feel very quick.
+
+Option 2:
+- At the top of the list, have a row with item name edittext and Add button. When the EditText is clicked, while keyboard is showing, also have animation expanding the "Add Item" area, to show the next 2 rows. The next 2 rows should have:
+	- Row 1: quantity, type of package, size, measurement unit
+	- Row 2: details (a Details field is always welcome.
+- After the user presses Add, the item is added to the list and the focus is sent back to the Item Name EditText. 
+- Question: when would it be best to minimize this area?
+	- Option 1: have a "Done adding" button? Not very good.
+	- Option 2: when the items list is scrolled. Tricky to implement right.
+	- Option 3: when tapping outside the Add Item area. What happens if user taps an item in the list? Do we check/uncheck it?
+	- Option 4: when the keyboard is minimized. Might be tricky to implement.
+	Needs further investigation to see which one feels most natural.
+
 
 TODOs:
  - add functionality for the back button. If in the "Add new item" state, close that window.
