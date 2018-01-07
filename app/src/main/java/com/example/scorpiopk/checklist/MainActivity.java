@@ -19,15 +19,14 @@ import com.example.scorpiopk.checklist.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements AddItemCallback
 {
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private Button mEditTextButton = null;
     private Button mPlusButton = null;
     LinearLayout mAddNewItemContainer = null;
-    private EditText mEditText = null;
+    AddNewItemView mAddNewItemView = null;
     List<String> mDataset = null;
 
     @Override
@@ -50,51 +49,8 @@ public class MainActivity extends Activity
                 HideNewItemScreen();
             }
         });
-
-        mEditText = (EditText) mAddNewItemContainer.findViewById(R.id.edittext_view);
-        mEditText.addTextChangedListener(new TextWatcher()
-        {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s)
-            {
-                String text = mEditText.getText().toString();
-                if (text.length() >=3)
-                {
-                    //Add suggestions box.
-                    // Change main layout from Linear Layout to Relative Layout.
-                    // Add suggestion box under EditText, but don't link it in any way to the
-                    // RecyclerView. Make sure suggestions box is on top of RecyclerView
-                    // Items in suggestion box should be clickable.
-                    // When clicked, the text should be inserted in the EditText
-                    // It will NOT be inserted in the list directly(only after button is pressed.
-                    // When item is sent to the EditText, hide Suggestions box. Only show it again
-                    // after the text in EditText is changed.
-                }
-            }
-        });
-        mEditTextButton = (Button) mAddNewItemContainer.findViewById(R.id.edittext_button);
-        mEditTextButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mAdapter.AddNewItem(mEditText.getText().toString());
-                mEditText.setText("");
-                HideNewItemScreen();
-            }
-        });
+        mAddNewItemView = (AddNewItemView)findViewById(R.id.add_item_layout);
+        mAddNewItemView.SetAddItemCallback(this);
 
         mPlusButton = (Button) findViewById(R.id.plus_button);
         mPlusButton.setOnClickListener(new View.OnClickListener()
@@ -127,20 +83,24 @@ public class MainActivity extends Activity
     {
         mAddNewItemContainer.setVisibility(View.VISIBLE);
 
-        InputMethodManager inputMethodManager =  (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(mEditText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
-        mEditText.requestFocus();
+        mAddNewItemView.ShowScreen();
     }
 
     private void HideNewItemScreen()
     {
         mAddNewItemContainer.setVisibility(View.GONE);
-        //hide keyboard
-        View view = this.getCurrentFocus();
-        if (view != null)
-        {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        mAddNewItemView.HideScreen();
+    }
+
+    @Override
+    public void AddItem(String itemName)
+    {
+        mAdapter.AddNewItem(itemName);
+    }
+
+    @Override
+    public void HideScreen()
+    {
+        HideNewItemScreen();
     }
 }

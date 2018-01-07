@@ -1,31 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="@dimen/defaultPadding"
+    android:gravity="center"
     android:background="@android:color/white">
     <EditText
-        android:id="@+id/edittext_view"
+        android:id="@+id/name_edittext"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="@android:color/black"
-        android:textSize="14dp"
-        android:hint="Insert New Item"
-        android:layout_weight="1"
-        android:background="@android:color/holo_blue_light"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:layout_height="@dimen/fieldHeight"
+        android:textColor="@color/fieldTextColor"
+        android:textSize="@dimen/fieldTextSize"
+        android:hint="Item name"
+        android:background="@color/fieldBackground"
+        android:paddingLeft="@dimen/defaultPadding"
+        android:paddingRight="@dimen/defaultPadding"
+        android:layout_marginBottom="@dimen/defaultMargin"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/defaultMargin">
+        <EditText
+            android:id="@+id/quantity_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fieldHeight"
+            android:textColor="@color/fieldTextColor"
+            android:textSize="@dimen/fieldTextSize"
+            android:hint="Quantity"
+            android:inputType="number"
+            android:layout_weight="1"
+            android:background="@color/fieldBackground"
+            android:layout_marginRight="@dimen/defaultMargin"
+            android:paddingLeft="@dimen/defaultPadding"
+            android:paddingRight="@dimen/defaultPadding"/>
+        <Spinner
+            android:id="@+id/package_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fieldHeight" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/defaultMargin">
+        <EditText
+            android:id="@+id/pack_size_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/fieldHeight"
+            android:textColor="@color/fieldTextColor"
+            android:textSize="@dimen/fieldTextSize"
+            android:hint="Pack Size"
+            android:inputType="number"
+            android:layout_weight="1"
+            android:background="@color/fieldBackground"
+            android:layout_marginRight="@dimen/defaultMargin"
+            android:paddingLeft="@dimen/defaultPadding"
+            android:paddingRight="@dimen/defaultPadding"/>
+        <Spinner
+            android:id="@+id/measurement_unit_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/fieldHeight" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/details_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/fieldHeight"
+        android:textColor="@color/fieldTextColor"
+        android:textSize="@dimen/fieldTextSize"
+        android:hint="Details"
+        android:background="@color/fieldBackground"
+        android:paddingLeft="@dimen/defaultPadding"
+        android:paddingRight="@dimen/defaultPadding"
+        android:layout_marginBottom="@dimen/defaultMargin"/>
+
     <Button
-        android:id="@+id/edittext_button"
+        android:id="@+id/add_item_button"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
+        android:layout_height="@dimen/fieldHeight"
         android:background="@android:color/holo_orange_light"
         android:textColor="@android:color/black"
-        android:textSize="14dp"
+        android:textSize="@dimen/fieldTextSize"
         android:text="Add"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"/>
+        android:paddingLeft="@dimen/defaultPadding"
+        android:paddingRight="@dimen/defaultPadding"/>
 
 </LinearLayout>

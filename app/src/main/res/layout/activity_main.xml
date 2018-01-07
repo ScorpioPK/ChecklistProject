@@ -51,10 +51,9 @@
         android:gravity="center"
         android:clickable="true"
         android:visibility="gone">
-        <include
+        <com.example.scorpiopk.checklist.AddNewItemView
+            android:id="@+id/add_item_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edittext_layout"
-            layout="@layout/edittext_view"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 </FrameLayout>
