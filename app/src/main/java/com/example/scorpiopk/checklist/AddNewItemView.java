@@ -22,11 +22,11 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  * Created by ScorpioPK on 1/7/2018.
  */
 
-public class AddNewItemView extends LinearLayout
-{
+public class AddNewItemView extends LinearLayout {
     private Context mContext;
     private AddItemCallback mAddItemCallback = null;
     private EditText mItemNameEditText= null;
+    private View mNameEditTextCover = null;
     private EditText mQuantityEditText= null;
     private Spinner mPackageSpinner = null;
     private EditText mPackSizeEditText= null;
@@ -34,45 +34,39 @@ public class AddNewItemView extends LinearLayout
     private EditText mDetailsEditText = null;
     private Button mAddItemButton = null;
 
-    public AddNewItemView(Context context)
-    {
+    private boolean mIsOpen = false;
+
+    public AddNewItemView(Context context) {
         super(context);
         init(context, null);
     }
 
-    public AddNewItemView(Context context, AttributeSet attrs)
-    {
+    public AddNewItemView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs)
-    {
+    private void init(Context context, AttributeSet attrs) {
         mContext = context;
         inflate(context, R.layout.edittext_view, this);
 
         // name EditText
         mItemNameEditText = (EditText) findViewById(R.id.name_edittext);
-        mItemNameEditText.addTextChangedListener(new TextWatcher()
-        {
+        mItemNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after)
-            {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 String text = mItemNameEditText.getText().toString();
-                if (text.length() >=3)
-                {
+                if (text.length() >=3) {
                     // Add suggestions box.
                     // Change main layout from Linear Layout to Relative Layout.
                     // Add suggestion box under EditText, but don't link it in any way to the
@@ -86,17 +80,30 @@ public class AddNewItemView extends LinearLayout
             }
         });
 
+        mNameEditTextCover = findViewById(R.id.name_edittext_cover);
+        mNameEditTextCover.setClickable(true);
+        mNameEditTextCover.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mAddItemCallback != null) {
+                    mAddItemCallback.ShowNewItemScreen();
+                }
+            }
+        });
+
         // Quantity EditText
         mQuantityEditText = (EditText)findViewById(R.id.quantity_edittext);
 
         // Package spinner
         mPackageSpinner = (Spinner) findViewById(R.id.package_spinner);
         List<String> packageList = new ArrayList<String>();
-        packageList.add("Pcs.");
+        packageList.add("");
+        packageList.add("Pcs");
         packageList.add("Boxes");
+        packageList.add("Packs");
         packageList.add("Bags");
         ArrayAdapter<String> packageDataAdapter = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_spinner_item, packageList);
+                R.layout.spinner_item, packageList);
         packageDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPackageSpinner.setAdapter(packageDataAdapter);
 
@@ -106,13 +113,14 @@ public class AddNewItemView extends LinearLayout
         // Measurement unit spinner
         mMeasurementUnitSpinner = (Spinner) findViewById(R.id.measurement_unit_spinner);
         List<String> measurementUnitList = new ArrayList<String>();
+        measurementUnitList.add("");
         measurementUnitList.add("g");
         measurementUnitList.add("kg");
         measurementUnitList.add("mm");
         measurementUnitList.add("m");
-        measurementUnitList.add("pcs.");
+        measurementUnitList.add("pcs");
         ArrayAdapter<String> measurementUnitDataAdapter = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_spinner_item, measurementUnitList);
+                R.layout.spinner_item, measurementUnitList);
         measurementUnitDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMeasurementUnitSpinner.setAdapter(measurementUnitDataAdapter);
 
@@ -121,44 +129,73 @@ public class AddNewItemView extends LinearLayout
 
         //add item button
         mAddItemButton = (Button) findViewById(R.id.add_item_button);
-        mAddItemButton.setOnClickListener(new View.OnClickListener()
-        {
+        mAddItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if (mAddItemCallback != null)
-                {
-                    mAddItemCallback.AddItem(mItemNameEditText.getText().toString());
+            public void onClick(View v) {
+                if (mAddItemCallback != null) {
+                    mAddItemCallback.AddItem(new Item(  GetString(mItemNameEditText),
+                            GetInt(mQuantityEditText), GetString(mPackageSpinner),
+                            GetInt(mPackSizeEditText), GetString(mMeasurementUnitSpinner),
+                            GetString(mDetailsEditText)));
                 }
-                mItemNameEditText.setText("");
-                if (mAddItemCallback != null)
-                {
-                    mAddItemCallback.HideScreen();
-                }
+                ResetFields();
             }
         });
     }
 
-    public void ShowScreen()
-    {
+    private void ResetFields() {
+        mItemNameEditText.setText("");
+        mQuantityEditText.setText("");
+        mPackageSpinner.setSelection(0);
+        mPackSizeEditText.setText("");
+        mMeasurementUnitSpinner.setSelection(0);
+        mDetailsEditText.setText("");
+    }
+
+    public void ShowScreen() {
+        mIsOpen = true;
+        mNameEditTextCover.setVisibility(GONE);
         InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInputFromWindow(mItemNameEditText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
         mItemNameEditText.requestFocus();
     }
 
-    public void HideScreen()
-    {
+    public void HideScreen() {
+        mIsOpen = false;
+        mNameEditTextCover.setVisibility(VISIBLE);
         //hide keyboard
         View view = ((Activity)mContext).getCurrentFocus();
-        if (view != null)
-        {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public void SetAddItemCallback(AddItemCallback callback)
-    {
+    private int GetInt(EditText editText) {
+        if(editText.getText().toString().length() > 0) {
+            return Integer.parseInt(editText.getText().toString());
+        } else {
+            return Defines.DEFAULT_VALUE;
+        }
+    }
+
+    private String GetString(Spinner spinner) {
+        if(spinner.getSelectedItem().toString().length() > 0) {
+            return spinner.getSelectedItem().toString();
+        } else {
+            return Defines.DEFAULT_STRING;
+        }
+    }
+
+    private String GetString(EditText editText) {
+        if(editText.getText().toString().length() > 0) {
+            return editText.getText().toString();
+        } else {
+            return Defines.DEFAULT_STRING;
+        }
+    }
+
+    public void SetAddItemCallback(AddItemCallback callback) {
         mAddItemCallback = callback;
     }
 }

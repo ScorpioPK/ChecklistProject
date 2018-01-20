@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="fieldHeight">40dp</dimen>
+    <dimen name="fieldHeight">35dp</dimen>
+    <dimen name="addItemHeightClosed">60dp</dimen>
+    <dimen name="addItemHeightOpen">145dp</dimen>
     <dimen name="defaultPadding">10dp</dimen>
     <dimen name="defaultMargin">20dp</dimen>
     <dimen name="fieldTextSize">14sp</dimen>
     <dimen name="fieldSubtextSize">12sp</dimen>
+    <dimen name="recycler_item_height">40dp</dimen>
 </resources>

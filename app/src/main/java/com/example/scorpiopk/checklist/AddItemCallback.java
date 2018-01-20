@@ -6,6 +6,7 @@ package com.example.scorpiopk.checklist;
 
 public interface AddItemCallback
 {
-    public void AddItem(String itemName);
-    public void HideScreen();
+    public void AddItem(Item item);
+    public void ShowNewItemScreen();
+    public void HideNewItemScreen();
 }
