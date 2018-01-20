@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="black30">#4d000000</color>
     <color name="black70">#B2000000</color>
+
+    <color name="fieldTextColor">#000000</color>
+    <color name="fieldSubtextColor">#444444</color>
+    <color name="fieldBackground">#6666FF</color>
 </resources>

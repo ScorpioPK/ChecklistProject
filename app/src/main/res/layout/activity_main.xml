@@ -10,16 +10,33 @@
         android:paddingRight="10dp"
         android:background="@android:color/background_light">
         <TextView
+            android:id="@+id/title_textview"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:text="Main Title"
             android:textSize="18dp"
             android:textColor="@android:color/black"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@android:color/black"/>
+        <LinearLayout
+            android:id="@+id/add_new_item_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/addItemHeightClosed"
+            android:orientation="vertical"
+            android:background="@android:color/white"
+            android:padding="10dp"
+            android:gravity="center"
+            android:clickable="true">
+            <com.example.scorpiopk.checklist.AddNewItemView
+                android:id="@+id/add_item_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 <!--
         <include
             android:layout_width="match_parent"
@@ -41,20 +58,5 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="40dp"
         android:stateListAnimator="@null"/>
-    <LinearLayout
-        android:id="@+id/add_new_item_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/black70"
-        android:padding="10dp"
-        android:gravity="center"
-        android:clickable="true"
-        android:visibility="gone">
-        <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edittext_layout"
-            layout="@layout/edittext_view"/>
-    </LinearLayout>
+
 </FrameLayout>
