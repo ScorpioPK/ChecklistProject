@@ -1,7 +1,6 @@
 package com.example.scorpiopk.checklist;
 
 import android.content.Context;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,21 +9,13 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.scorpiopk.checklist.R;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements ReadFileCallback, View.OnClickListener
+public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> implements ReadFileCallback, View.OnClickListener, View.OnLongClickListener
 {
     private List<Item> mDataset = null;
     Context mContext = null;
@@ -52,7 +43,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(Context context, RecyclerView recyclerView, List<Item> myDataset)
+    public ItemsAdapter(Context context, RecyclerView recyclerView, List<Item> myDataset)
     {
         mContext = context;
         mRecyclerView = recyclerView;
@@ -62,8 +53,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType)
+    public ItemsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                      int viewType)
     {
         // create a new view
 
@@ -72,6 +63,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
         // set the view's size, margins, paddings and layout parameters
         v.setClickable(true);
         v.setOnClickListener(this);
+        v.setOnLongClickListener(this);
         ViewHolder vh = new ViewHolder(v);
         return vh;
     }
@@ -151,12 +143,33 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
     }
 
     @Override
+    public boolean onLongClick(View v)
+    {
+        int itemPosition = mRecyclerView.getChildLayoutPosition(v);
+        Item item = mDataset.get(itemPosition);
+        LinearLayout itemLayout = (LinearLayout)v.findViewById(R.id.item_layout);
+        switch (item.mState) {
+            case Item.TO_BUY:
+            case Item.BOUGHT:
+                item.mState = Item.ASSIGNED;
+                break;
+            case Item.ASSIGNED:
+                item.mState = Item.TO_BUY;
+                break;
+        }
+        SetItemBackgroundForState(itemLayout, item.mState);
+        SaveToFile();
+        return true;
+    }
+
+    @Override
     public void onClick(View v) {
         int itemPosition = mRecyclerView.getChildLayoutPosition(v);
         Item item = mDataset.get(itemPosition);
         LinearLayout itemLayout = (LinearLayout)v.findViewById(R.id.item_layout);
         switch (item.mState) {
             case Item.TO_BUY:
+            case Item.ASSIGNED:
                 item.mState = Item.BOUGHT;
                 break;
             case Item.BOUGHT:
@@ -174,6 +187,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implem
                 break;
             case Item.BOUGHT:
                 itemLayout.setBackgroundResource(R.color.itemBought);
+                break;
+            case Item.ASSIGNED:
+                itemLayout.setBackgroundResource(R.color.itemAssigned);
                 break;
         }
     }

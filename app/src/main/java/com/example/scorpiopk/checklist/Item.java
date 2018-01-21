@@ -17,10 +17,10 @@ public class Item {
     public static final String JSON_DETAILS = "details";
     public static final String JSON_STATE = "state";
 
-    // List of states of the item. Will probably add "assigned"
-    // Maybe another field for who it's assigned to.
+    // ASSIGNED will require another field for the person it's assigned to
     public static final int TO_BUY = 1;
     public static final int BOUGHT = 2;
+    public static final int ASSIGNED = 3;
 
     public String mName;
     public int mQuantity = Defines.DEFAULT_VALUE;

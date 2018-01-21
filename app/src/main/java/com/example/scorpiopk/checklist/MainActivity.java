@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class MainActivity extends Activity implements AddItemCallback
     private static Activity sInstance = null;
 
     private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
+    private ItemsAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button mPlusButton = null;
     LinearLayout mAddNewItemContainer = null;
@@ -80,7 +78,7 @@ public class MainActivity extends Activity implements AddItemCallback
         // specify an adapter (see also next example)
 
 
-        mAdapter = new MyAdapter(this, mRecyclerView, mDataset);
+        mAdapter = new ItemsAdapter(this, mRecyclerView, mDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         sInstance = this;
