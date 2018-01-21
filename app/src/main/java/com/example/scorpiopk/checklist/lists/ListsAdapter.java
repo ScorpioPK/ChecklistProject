@@ -131,6 +131,7 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
                 JSONWrapper jsonObject = new JSONWrapper(jsonArray.getJSONObject(i));
                 mDataset.add(new ListItem(jsonObject));
             }
+            notifyDataSetChanged();
         } catch (JSONException e)
         {
             e.printStackTrace();

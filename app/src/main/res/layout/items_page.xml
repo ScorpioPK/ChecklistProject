@@ -6,13 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="@dimen/defaultPadding"
+        android:paddingRight="@dimen/defaultPadding"
         android:background="@android:color/background_light">
         <TextView
             android:id="@+id/title_textview"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/titleHeight"
             android:text="Main Title"
             android:textSize="18dp"
             android:textColor="@android:color/black"
@@ -29,7 +29,8 @@
             android:layout_height="@dimen/addItemHeightClosed"
             android:orientation="vertical"
             android:background="@android:color/white"
-            android:padding="10dp"
+            android:paddingTop="@dimen/defaultPadding"
+            android:paddingBottom="@dimen/defaultPadding"
             android:gravity="center"
             android:clickable="true">
             <com.example.scorpiopk.checklist.items.AddNewItemView
