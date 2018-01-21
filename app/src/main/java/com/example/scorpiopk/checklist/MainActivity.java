@@ -80,7 +80,7 @@ public class MainActivity extends Activity implements AddItemCallback
         // specify an adapter (see also next example)
 
 
-        mAdapter = new MyAdapter(this, mDataset);
+        mAdapter = new MyAdapter(this, mRecyclerView, mDataset);
         mRecyclerView.setAdapter(mAdapter);
 
         sInstance = this;

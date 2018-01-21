@@ -9,4 +9,6 @@
     <color name="fieldTextColor">#000000</color>
     <color name="fieldSubtextColor">#444444</color>
     <color name="fieldBackground">#6666FF</color>
+    <color name="itemToBuy">#ffffff</color>
+    <color name="itemBought">#4d000000</color>
 </resources>

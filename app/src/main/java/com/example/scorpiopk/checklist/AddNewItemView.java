@@ -136,7 +136,7 @@ public class AddNewItemView extends LinearLayout {
                     mAddItemCallback.AddItem(new Item(  GetString(mItemNameEditText),
                             GetInt(mQuantityEditText), GetString(mPackageSpinner),
                             GetInt(mPackSizeEditText), GetString(mMeasurementUnitSpinner),
-                            GetString(mDetailsEditText)));
+                            GetString(mDetailsEditText), Item.TO_BUY));
                 }
                 ResetFields();
             }

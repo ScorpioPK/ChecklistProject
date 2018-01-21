@@ -4,6 +4,7 @@
     android:layout_height="@dimen/recycler_item_height"
     android:orientation="vertical">
     <LinearLayout
+        android:id="@+id/item_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

@@ -15,6 +15,12 @@ public class Item {
     public static final String JSON_PACK_SIZE = "pack_size";
     public static final String JSON_MEASUREMENT_UNIT = "unit";
     public static final String JSON_DETAILS = "details";
+    public static final String JSON_STATE = "state";
+
+    // List of states of the item. Will probably add "assigned"
+    // Maybe another field for who it's assigned to.
+    public static final int TO_BUY = 1;
+    public static final int BOUGHT = 2;
 
     public String mName;
     public int mQuantity = Defines.DEFAULT_VALUE;
@@ -22,14 +28,16 @@ public class Item {
     public int mPackSize = Defines.DEFAULT_VALUE;
     public String mMeasurementUnit = Defines.DEFAULT_STRING;
     public String mDetails = Defines.DEFAULT_STRING;
+    public int mState = TO_BUY;
 
-    public Item(String name, int quantity, String packType, int packSize, String measurementUnit, String details) {
+    public Item(String name, int quantity, String packType, int packSize, String measurementUnit, String details, int state) {
         mName = name;
         mQuantity = quantity;
         mPackType = packType;
         mPackSize = packSize;
         mMeasurementUnit = measurementUnit;
         mDetails = details;
+        mState = state;
     }
 
     public Item(JSONWrapper jsonObject) {
@@ -39,6 +47,10 @@ public class Item {
         mPackSize = jsonObject.GetIntFromJSON(JSON_PACK_SIZE);
         mMeasurementUnit = jsonObject.GetStringFromJSON(JSON_MEASUREMENT_UNIT);
         mDetails = jsonObject.GetStringFromJSON(JSON_DETAILS);
+        mState = jsonObject.GetIntFromJSON(JSON_STATE);
+        if (mState == Defines.DEFAULT_VALUE) {
+            mState = TO_BUY;
+        }
     }
 
     public JSONObject ToJson() {
@@ -53,6 +65,7 @@ public class Item {
             jsonObject.PutStringInJSON(JSON_MEASUREMENT_UNIT, mMeasurementUnit);
         }
         jsonObject.PutStringInJSON(JSON_DETAILS, mDetails);
+        jsonObject.PutIntInJSON(JSON_STATE, mState);
 
         return jsonObject.GetJSON();
     }
