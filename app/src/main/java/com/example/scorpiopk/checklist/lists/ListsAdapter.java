@@ -147,6 +147,7 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
     public void OpenListPage(String listName) {
         // Open list page
         ItemsPage itemsPage = new ItemsPage(mContext, listName);
+        MainActivity.GetCurrentActivity().HideKeyboard();
         MainActivity.GetCurrentActivity().setContentView(itemsPage);
     }
 }

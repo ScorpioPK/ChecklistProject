@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.example.scorpiopk.checklist.MainActivity;
 import com.example.scorpiopk.checklist.R;
 import com.example.scorpiopk.checklist.utils.Defines;
 
@@ -166,12 +167,7 @@ public class AddNewItemView extends LinearLayout {
     public void HideScreen() {
         mIsOpen = false;
         mNameEditTextCover.setVisibility(VISIBLE);
-        //hide keyboard
-        View view = ((Activity)mContext).getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        MainActivity.GetCurrentActivity().HideKeyboard();
     }
 
     private int GetInt(EditText editText) {
