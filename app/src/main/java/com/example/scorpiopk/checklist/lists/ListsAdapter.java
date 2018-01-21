@@ -132,8 +132,7 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
                 mDataset.add(new ListItem(jsonObject));
             }
             notifyDataSetChanged();
-        } catch (JSONException e)
-        {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }

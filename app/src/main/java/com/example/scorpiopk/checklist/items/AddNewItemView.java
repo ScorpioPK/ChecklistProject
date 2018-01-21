@@ -52,7 +52,7 @@ public class AddNewItemView extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
-        inflate(context, R.layout.edittext_view, this);
+        inflate(context, R.layout.add_item_view, this);
 
         // name EditText
         mItemNameEditText = (EditText) findViewById(R.id.name_edittext);
@@ -143,6 +143,7 @@ public class AddNewItemView extends LinearLayout {
                             GetString(mDetailsEditText), Item.TO_BUY));
                 }
                 ResetFields();
+                mItemNameEditText.requestFocus();
             }
         });
     }
