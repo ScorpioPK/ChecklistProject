@@ -1,6 +1,7 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.items;
 
-import com.example.scorpiopk.checklist.JSONWrapper;
+import com.example.scorpiopk.checklist.utils.Defines;
+import com.example.scorpiopk.checklist.utils.JSONWrapper;
 
 import org.json.JSONObject;
 

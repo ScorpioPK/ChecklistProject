@@ -1,4 +1,4 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.utils;
 
 /**
  * Created by ScorpioPK on 1/20/2018.

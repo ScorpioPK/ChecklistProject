@@ -1,4 +1,4 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.utils;
 
 import android.Manifest;
 import android.app.Activity;
@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.example.scorpiopk.checklist.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,6 +32,7 @@ public class FileHelper {
 
     final static int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
     final static String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/checklist/" ;
+    final static String EXTENSION = ".txt";
     final static String TAG = FileHelper.class.getName();
 
     public static String sFileName = null;
@@ -42,7 +45,7 @@ public class FileHelper {
             String line = null;
 
             try {
-                FileInputStream fileInputStream = new FileInputStream(new File(path + fileName));
+                FileInputStream fileInputStream = new FileInputStream(new File(path + fileName + EXTENSION));
                 InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 StringBuilder stringBuilder = new StringBuilder();
@@ -71,7 +74,7 @@ public class FileHelper {
         if (AskForPermission(MainActivity.GetCurrentActivity())) {
             try {
                 new File(path).mkdir();
-                File file = new File(path + fileName);
+                File file = new File(path + fileName + EXTENSION);
                 if (!file.exists()) {
                     file.createNewFile();
                 }

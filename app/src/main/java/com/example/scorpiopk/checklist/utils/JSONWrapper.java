@@ -1,4 +1,6 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.utils;
+
+import com.example.scorpiopk.checklist.utils.Defines;
 
 import org.json.JSONException;
 import org.json.JSONObject;

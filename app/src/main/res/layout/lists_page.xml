@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,27 +24,37 @@
             android:layout_height="2dp"
             android:background="@android:color/black"/>
         <LinearLayout
-            android:id="@+id/add_new_item_container"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/addItemHeightClosed"
-            android:orientation="vertical"
-            android:background="@android:color/white"
-            android:padding="10dp"
-            android:gravity="center"
-            android:clickable="true">
-            <com.example.scorpiopk.checklist.items.AddNewItemView
-                android:id="@+id/add_item_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-<!--
-        <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/edittext_layout"
-            layout="@layout/edittext_view"
-            android:layout_marginTop="20dp"/>
--->
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/new_list_edittext"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fieldHeight"
+                android:textColor="@color/fieldTextColor"
+                android:textSize="@dimen/fieldTextSize"
+                android:hint="List name"
+                android:background="@color/fieldBackground"
+                android:layout_marginRight="@dimen/defaultPadding"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/defaultPadding"
+                android:paddingRight="@dimen/defaultPadding"/>
+            <Button
+                android:id="@+id/add_list_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/fieldHeight"
+                android:background="@android:color/holo_orange_light"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/fieldTextSize"
+                android:text="Add"
+                android:paddingLeft="@dimen/defaultPadding"
+                android:paddingRight="@dimen/defaultPadding"/>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@android:color/black"/>
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

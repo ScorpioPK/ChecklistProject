@@ -1,4 +1,4 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.items;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.scorpiopk.checklist.R;
+import com.example.scorpiopk.checklist.utils.Defines;
+import com.example.scorpiopk.checklist.utils.FileHelper;
+import com.example.scorpiopk.checklist.utils.JSONWrapper;
+import com.example.scorpiopk.checklist.utils.ReadFileCallback;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -18,6 +24,7 @@ import java.util.List;
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> implements ReadFileCallback, View.OnClickListener, View.OnLongClickListener
 {
     private List<Item> mDataset = null;
+    private String mListName = null;
     Context mContext = null;
     RecyclerView mRecyclerView = null;
 
@@ -43,12 +50,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ItemsAdapter(Context context, RecyclerView recyclerView, List<Item> myDataset)
+    public ItemsAdapter(Context context, RecyclerView recyclerView, List<Item> myDataset, String listName)
     {
         mContext = context;
         mRecyclerView = recyclerView;
         mDataset = new ArrayList<>();
         mDataset.addAll(myDataset);
+        mListName = listName;
     }
 
     // Create new views (invoked by the layout manager)
@@ -59,7 +67,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         // create a new view
 
         LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_textview, parent, false);
+                .inflate(R.layout.item_layout_file, parent, false);
         // set the view's size, margins, paddings and layout parameters
         v.setClickable(true);
         v.setOnClickListener(this);
@@ -117,11 +125,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         for (Item item : mDataset) {
             jsonArray.put(item.ToJson());
         }
-        FileHelper.SaveToFile(jsonArray.toString(), "testList.txt");
+        FileHelper.SaveToFile(jsonArray.toString(), mListName);
     }
 
     public void ReadDataFromFile() {
-        FileHelper.ReadFile(mContext, "testList.txt", this);
+        FileHelper.ReadFile(mContext, mListName, this);
     }
 
     @Override

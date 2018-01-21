@@ -1,4 +1,4 @@
-package com.example.scorpiopk.checklist;
+package com.example.scorpiopk.checklist.items;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+
+import com.example.scorpiopk.checklist.R;
+import com.example.scorpiopk.checklist.utils.Defines;
 
 import java.util.ArrayList;
 import java.util.List;
