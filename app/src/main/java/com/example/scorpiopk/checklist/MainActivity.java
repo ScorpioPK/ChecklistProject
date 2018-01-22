@@ -25,6 +25,12 @@ public class MainActivity extends Activity
         ShowMainScreen();
     }
 
+    public void DeleteList(String listName) {
+        ListsPage listsPage = new ListsPage(this);
+        setContentView(listsPage);
+        listsPage.DeleteList(listName);
+    }
+
     public void ShowMainScreen() {
         ListsPage listsPage = new ListsPage(this);
         setContentView(listsPage);

@@ -80,6 +80,10 @@ public class ListsPage extends FrameLayout implements View.OnClickListener {
         mAdapter.ReadDataFromFile();
     }
 
+    public void DeleteList(String listName) {
+        mAdapter.DeleteList(listName);
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

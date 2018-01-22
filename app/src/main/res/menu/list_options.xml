@@ -7,11 +7,8 @@
         android:id="@+id/sort_list"
         android:title="Sort items" />
     <item
-        android:id="@+id/hide_purchased"
-        android:title="Hide Purchased" />
-    <item
-        android:id="@+id/rename_list"
-        android:title="Rename list" />
+        android:id="@+id/remove_purchased"
+        android:title="Remove Purchased" />
     <item
         android:id="@+id/delete_list"
         android:title="Delete list" />

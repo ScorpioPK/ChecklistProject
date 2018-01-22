@@ -93,6 +93,11 @@ public class FileHelper {
         }
     }
 
+    public static boolean DeleteFile(String fileName) {
+        File file = new File(path + fileName + EXTENSION);
+        return file.delete();
+    }
+
     public static boolean AskForPermission(Context context) {
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)

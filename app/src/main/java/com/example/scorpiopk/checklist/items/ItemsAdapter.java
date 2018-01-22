@@ -19,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> implements ReadFileCallback, View.OnClickListener, View.OnLongClickListener
@@ -199,6 +201,47 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             case Item.ASSIGNED:
                 itemLayout.setBackgroundResource(R.color.itemAssigned);
                 break;
+        }
+    }
+
+    public void CleanItems() {
+        for (Item tempItem : mDataset) {
+            tempItem.mState = Item.TO_BUY;
+        }
+        notifyDataSetChanged();
+        SaveToFile();
+    }
+
+    public void SortList() {
+        Collections.sort(mDataset, new ItemsComparator());
+        notifyDataSetChanged();
+        SaveToFile();
+    }
+
+    public void RemoveBoughtItems() {
+        int index = 0;
+        while (index < mDataset.size()) {
+            Item item = mDataset.get(index);
+            if (item.mState == Item.BOUGHT) {
+                mDataset.remove(index);
+            }
+            else {
+                index++;
+            }
+        }
+        notifyDataSetChanged();
+        SaveToFile();
+    }
+
+    public class ItemsComparator implements Comparator<Item> {
+        @Override
+        public int compare(Item item1, Item item2) {
+            if (item1.mState == Item.TO_BUY ||
+                    (item1.mState == Item.ASSIGNED && item2.mState != Item.TO_BUY) ||
+                    (item1.mState == Item.BOUGHT && item2.mState == Item.BOUGHT)) {
+                return -1;
+            }
+            return 1;
         }
     }
 }

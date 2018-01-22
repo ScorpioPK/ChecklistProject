@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.example.scorpiopk.checklist.MainActivity;
 import com.example.scorpiopk.checklist.R;
-import com.example.scorpiopk.checklist.items.Item;
-import com.example.scorpiopk.checklist.items.ItemsAdapter;
 import com.example.scorpiopk.checklist.items.ItemsPage;
 import com.example.scorpiopk.checklist.utils.Defines;
 import com.example.scorpiopk.checklist.utils.FileHelper;
@@ -149,5 +147,17 @@ public class ListsAdapter extends RecyclerView.Adapter<ListsAdapter.ViewHolder> 
         ItemsPage itemsPage = new ItemsPage(mContext, listName);
         MainActivity.GetCurrentActivity().HideKeyboard();
         MainActivity.GetCurrentActivity().setContentView(itemsPage);
+    }
+
+    public void DeleteList(final String listName) {
+        for (int index = 0; index < mDataset.size(); index++) {
+            if (mDataset.get(index).mName.equals(listName)) {
+                mDataset.remove(index);
+                notifyDataSetChanged();
+                SaveToFile();
+                FileHelper.DeleteFile(listName);
+                break;
+            }
+        }
     }
 }

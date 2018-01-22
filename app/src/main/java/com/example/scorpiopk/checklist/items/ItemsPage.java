@@ -17,6 +17,7 @@ import com.example.scorpiopk.checklist.R;
 import com.example.scorpiopk.checklist.utils.ResizeAnimation;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -144,14 +145,16 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.clean_items:
+                mAdapter.CleanItems();
                 return true;
             case R.id.sort_list:
+                mAdapter.SortList();
                 return true;
-            case R.id.hide_purchased:
-                return true;
-            case R.id.rename_list:
+            case R.id.remove_purchased:
+                mAdapter.RemoveBoughtItems();
                 return true;
             case R.id.delete_list:
+                MainActivity.GetCurrentActivity().DeleteList(mTitleView.getText().toString());
                 return true;
             default:
                 return false;
