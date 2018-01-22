@@ -1,19 +1,18 @@
 package com.example.scorpiopk.checklist.items;
 
 import android.content.Context;
-import android.support.annotation.AttrRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.scorpiopk.checklist.MainActivity;
 import com.example.scorpiopk.checklist.R;
 import com.example.scorpiopk.checklist.utils.ResizeAnimation;
 
@@ -24,7 +23,7 @@ import java.util.List;
  * Created by ScorpioPK on 1/21/2018.
  */
 
-public class ItemsPage extends FrameLayout implements AddItemCallback {
+public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
     Context mContext = null;
     String mListName = null;
     private RecyclerView mRecyclerView;
@@ -34,9 +33,12 @@ public class ItemsPage extends FrameLayout implements AddItemCallback {
     LinearLayout mAddNewItemContainer = null;
     AddNewItemView mAddNewItemView = null;
     List<Item> mDataset = null;
+    private Button mBackButton = null;
     TextView mTitleView = null;
+    private Button mOptionsButton = null;
+    PopupMenu mOptionsMenu = null;
 
-    public ItemsPage(@NonNull Context context, String listName) {
+    public ItemsPage(Context context, String listName) {
         super(context);
         init(context, listName);
     }
@@ -47,9 +49,21 @@ public class ItemsPage extends FrameLayout implements AddItemCallback {
         LayoutInflater layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.items_page, this);
 
+        mBackButton = (Button) findViewById(R.id.back_button);
+        mBackButton.setOnClickListener(this);
+
         mTitleView = (TextView)findViewById(R.id.title_textview);
         mTitleView.setText(mListName);
         mTitleView.requestFocus();
+
+        mOptionsButton = (Button) findViewById(R.id.options_button);
+        mOptionsButton.setOnClickListener(this);
+        mOptionsMenu = new PopupMenu(MainActivity.GetCurrentActivity(), mOptionsButton);
+        //Inflating the Popup using xml file
+        mOptionsMenu.getMenuInflater().inflate(R.menu.list_options, mOptionsMenu.getMenu());
+
+        //registering popup with OnMenuItemClickListener
+        mOptionsMenu.setOnMenuItemClickListener(this);
 
         mAddNewItemContainer = (LinearLayout)findViewById(R.id.add_new_item_container);
         mAddNewItemContainer.setOnClickListener(new View.OnClickListener() {
@@ -114,4 +128,33 @@ public class ItemsPage extends FrameLayout implements AddItemCallback {
         mAdapter.AddNewItem(item);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.back_button:
+                MainActivity.GetCurrentActivity().onBackPressed();
+                break;
+            case R.id.options_button:
+                mOptionsMenu.show();//showing popup menu
+                break;
+        }
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.clean_items:
+                return true;
+            case R.id.sort_list:
+                return true;
+            case R.id.hide_purchased:
+                return true;
+            case R.id.rename_list:
+                return true;
+            case R.id.delete_list:
+                return true;
+            default:
+                return false;
+        }
+    }
 }
