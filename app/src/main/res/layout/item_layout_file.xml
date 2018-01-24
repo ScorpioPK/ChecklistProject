@@ -5,48 +5,32 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 <android.support.v7.widget.CardView
+    android:id="@+id/item_cardview"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     card_view:cardElevation="@dimen/card_elevation"
     card_view:cardUseCompatPadding="true">
 <LinearLayout
+    android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="@dimen/recycler_item_height"
+    android:gravity="center_vertical"
     android:orientation="vertical">
-    <LinearLayout
-        android:id="@+id/item_layout"
+    <TextView
+        android:id="@+id/item_name_textview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/item_name_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/fieldTextSize"
-                android:paddingLeft="10dp"
-                android:textColor="@color/fieldTextColor"/>
-            <TextView
-                android:id="@+id/item_details_textview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/fieldSubtextSize"
-                android:paddingLeft="10dp"
-                android:text="2 Boxes, 10 pcs. From Lidl"
-                android:textColor="@color/fieldSubtextColor"/>
-            </LinearLayout>
-        <Button
-            android:id="@+id/item_button"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@drawable/plus_button_background"/>
-    </LinearLayout>
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fieldTextSize"
+        android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:textColor="@color/fieldTextColor"/>
+    <TextView
+        android:id="@+id/item_details_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/fieldSubtextSize"
+        android:paddingLeft="@dimen/defaultPadding"
+        android:textColor="@color/fieldSubtextColor"/>
 </LinearLayout>
 </android.support.v7.widget.CardView>
 </LinearLayout>

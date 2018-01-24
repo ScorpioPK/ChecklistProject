@@ -38,7 +38,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         // each data item is just a string in this case
         public TextView mNameTextview;
         public TextView mDetailsTextview;
-        public Button mItemButton;
         public LinearLayout mCellLayout;
         public LinearLayout mItemLayout;
         public ViewHolder(LinearLayout v)
@@ -105,7 +104,13 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             }
             detailsText += item.mDetails;
         }
-        holder.mDetailsTextview.setText(detailsText);
+        if (detailsText.length() == 0) {
+            holder.mDetailsTextview.setVisibility(View.GONE);
+        }
+        else {
+            holder.mDetailsTextview.setVisibility(View.VISIBLE);
+            holder.mDetailsTextview.setText(detailsText);
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
