@@ -7,11 +7,12 @@
     <color name="black70">#B2000000</color>
 
     <color name="fieldTextColor">#000000</color>
+    <color name="editTextTextColor">#727272</color>
     <color name="fieldSubtextColor">#444444</color>
-    <color name="fieldBackground">#6666FF</color>
+    <color name="fieldBackground">#ffffff</color>
     <color name="itemToBuy">#ffffff</color>
-    <color name="itemBought">#4d000000</color>
-    <color name="itemAssigned">#ffff00</color>
-    <color name="itemBackgroundLeft">#ff0000</color>
-    <color name="itemBackgroundRight">#0000ff</color>
+    <color name="itemBought">#4CAF50</color>
+    <color name="itemAssigned">#FFA000</color>
+    <color name="editItem">#B71C1C</color>
+    <color name="deleteItem">#607D8B</color>
 </resources>

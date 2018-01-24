@@ -3,11 +3,11 @@ package com.example.scorpiopk.checklist.items;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,13 +37,14 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     // you provide access to all the views for a data item in a view holder
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        // each data item is just a string in this case
+        // each data item is just a string in this
         public TextView mNameTextview;
         public TextView mDetailsTextview;
         public LinearLayout mItemLayout;
         public CardView mItemCardview;
         public TextView mItemBackgroundLeft;
         public TextView mItemBackgroundRight;
+        public ImageView mItemCheckmark;
         public ViewHolder(FrameLayout v)
         {
             super(v);
@@ -53,6 +54,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
             mItemBackgroundRight = (TextView)v.findViewById(R.id.item_background_right);
             mNameTextview = (TextView)v.findViewById(R.id.item_name_textview);
             mDetailsTextview = (TextView)v.findViewById(R.id.item_details_textview);
+            mItemCheckmark = (ImageView)v.findViewById(R.id.item_icon);
         }
     }
 
@@ -182,6 +184,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 break;
         }
         SetItemBackgroundForState(itemLayout, item.mState);
+        (v.findViewById(R.id.item_icon)).setVisibility(item.mState == Item.BOUGHT ? View.VISIBLE : View.GONE);
         SaveToFile();
         return true;
     }
@@ -211,15 +214,21 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     }
 
     public void SetItemBackgroundForState(LinearLayout itemLayout, int state) {
+        ImageView itemIcon = (ImageView)itemLayout.findViewById(R.id.item_icon);
         switch (state) {
             case Item.TO_BUY:
                 itemLayout.setBackgroundResource(R.color.itemToBuy);
+                itemIcon.setVisibility(View.GONE);
                 break;
             case Item.BOUGHT:
                 itemLayout.setBackgroundResource(R.color.itemBought);
+                itemIcon.setBackgroundResource(R.drawable.checkmark);
+                itemIcon.setVisibility(View.VISIBLE);
                 break;
             case Item.ASSIGNED:
                 itemLayout.setBackgroundResource(R.color.itemAssigned);
+                itemIcon.setBackgroundResource(R.drawable.list_image);
+                itemIcon.setVisibility(View.VISIBLE);
                 break;
         }
     }
