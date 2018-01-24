@@ -18,6 +18,7 @@ import com.example.scorpiopk.checklist.R;
 import com.example.scorpiopk.checklist.utils.Defines;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -37,8 +38,14 @@ public class AddNewItemView extends LinearLayout {
     private Spinner mMeasurementUnitSpinner = null;
     private EditText mDetailsEditText = null;
     private Button mAddItemButton = null;
+    private boolean mIsEditing = false;
+    private Item mEditedItem = null;
 
     private boolean mIsOpen = false;
+    private static List<String> mPackagesList = Arrays.asList("", "Pcs", "Boxes", "Packs", "Bags");
+    private static List<String> mMeasurementUnitsList = Arrays.asList("", "g", "kg", "mm", "m", "pcs");
+
+    List<String> supplierNames = Arrays.asList("sup1", "sup2", "sup3");
 
     public AddNewItemView(Context context) {
         super(context);
@@ -100,14 +107,9 @@ public class AddNewItemView extends LinearLayout {
 
         // Package spinner
         mPackageSpinner = (Spinner) findViewById(R.id.package_spinner);
-        List<String> packageList = new ArrayList<String>();
-        packageList.add("");
-        packageList.add("Pcs");
-        packageList.add("Boxes");
-        packageList.add("Packs");
-        packageList.add("Bags");
+
         ArrayAdapter<String> packageDataAdapter = new ArrayAdapter<String>(mContext,
-                R.layout.spinner_item, packageList);
+                R.layout.spinner_item, mPackagesList);
         packageDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mPackageSpinner.setAdapter(packageDataAdapter);
 
@@ -116,15 +118,9 @@ public class AddNewItemView extends LinearLayout {
 
         // Measurement unit spinner
         mMeasurementUnitSpinner = (Spinner) findViewById(R.id.measurement_unit_spinner);
-        List<String> measurementUnitList = new ArrayList<String>();
-        measurementUnitList.add("");
-        measurementUnitList.add("g");
-        measurementUnitList.add("kg");
-        measurementUnitList.add("mm");
-        measurementUnitList.add("m");
-        measurementUnitList.add("pcs");
+
         ArrayAdapter<String> measurementUnitDataAdapter = new ArrayAdapter<String>(mContext,
-                R.layout.spinner_item, measurementUnitList);
+                R.layout.spinner_item, mMeasurementUnitsList);
         measurementUnitDataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mMeasurementUnitSpinner.setAdapter(measurementUnitDataAdapter);
 
@@ -137,13 +133,27 @@ public class AddNewItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 if (mAddItemCallback != null) {
-                    mAddItemCallback.AddItem(new Item(  GetString(mItemNameEditText),
-                            GetInt(mQuantityEditText), GetString(mPackageSpinner),
-                            GetInt(mPackSizeEditText), GetString(mMeasurementUnitSpinner),
-                            GetString(mDetailsEditText), Item.TO_BUY));
+                    if (mIsEditing) {
+                        mEditedItem.mName = GetString(mItemNameEditText);
+                        mEditedItem.mQuantity = GetInt(mQuantityEditText);
+                        mEditedItem.mPackType = GetString(mPackageSpinner);
+                        mEditedItem.mPackSize = GetInt(mPackSizeEditText);
+                        mEditedItem.mMeasurementUnit = GetString(mMeasurementUnitSpinner);
+                        mEditedItem.mDetails = GetString(mDetailsEditText);
+                        mAddItemCallback.UpdateItem(mEditedItem);
+                        mIsEditing = false;
+                        mEditedItem = null;
+                        mAddItemCallback.HideNewItemScreen();
+                    }
+                    else {
+                        mAddItemCallback.AddItem(new Item(GetString(mItemNameEditText),
+                                GetInt(mQuantityEditText), GetString(mPackageSpinner),
+                                GetInt(mPackSizeEditText), GetString(mMeasurementUnitSpinner),
+                                GetString(mDetailsEditText), Item.TO_BUY));
+                        mItemNameEditText.requestFocus();
+                    }
                 }
                 ResetFields();
-                mItemNameEditText.requestFocus();
             }
         });
     }
@@ -157,17 +167,36 @@ public class AddNewItemView extends LinearLayout {
         mDetailsEditText.setText("");
     }
 
-    public void ShowScreen() {
+    public void ShowScreen(Item item) {
         mIsOpen = true;
         mNameEditTextCover.setVisibility(GONE);
         InputMethodManager inputMethodManager = (InputMethodManager)mContext.getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInputFromWindow(mItemNameEditText.getApplicationWindowToken(), InputMethodManager.SHOW_FORCED, 0);
+        inputMethodManager.toggleSoftInputFromWindow(mItemNameEditText.getApplicationWindowToken(),
+                                                        InputMethodManager.SHOW_FORCED, 0);
+        if (item != null) {
+            mItemNameEditText.setText(item.mName);
+            mQuantityEditText.setText(GetAsEditTextString(item.mQuantity));
+            mPackageSpinner.setSelection(mPackagesList.indexOf(item.mPackType));
+            mPackSizeEditText.setText(GetAsEditTextString(item.mPackSize));
+            mMeasurementUnitSpinner.setSelection(mMeasurementUnitsList.indexOf(item.mMeasurementUnit));
+            mDetailsEditText.setText(item.mDetails);
+
+            mAddItemButton.setText("SAVE");
+
+            mIsEditing = true;
+            mEditedItem = item;
+        }
+        else {
+            mIsEditing = false;
+        }
+
         mItemNameEditText.requestFocus();
     }
 
     public void HideScreen() {
         mIsOpen = false;
         mNameEditTextCover.setVisibility(VISIBLE);
+        mAddItemButton.setText("ADD");
         MainActivity.GetCurrentActivity().HideKeyboard();
     }
 
@@ -193,6 +222,10 @@ public class AddNewItemView extends LinearLayout {
         } else {
             return Defines.DEFAULT_STRING;
         }
+    }
+
+    public String GetAsEditTextString(int value) {
+        return (value != Defines.DEFAULT_VALUE) ? Integer.toString(value) : "";
     }
 
     public void SetAddItemCallback(AddItemCallback callback) {

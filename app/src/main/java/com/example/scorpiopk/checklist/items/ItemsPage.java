@@ -1,8 +1,11 @@
 package com.example.scorpiopk.checklist.items;
 
 import android.content.Context;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +26,7 @@ import java.util.List;
  * Created by ScorpioPK on 1/21/2018.
  */
 
-public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener {
+public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnClickListener, PopupMenu.OnMenuItemClickListener, ItemsTouchHelper.RecyclerItemTouchHelperListener {
     Context mContext = null;
     String mListName = null;
     private RecyclerView mRecyclerView;
@@ -90,14 +93,24 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mAdapter = new ItemsAdapter(mContext, mRecyclerView, mDataset, mListName);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.ReadDataFromFile();
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new ItemsTouchHelper(0,
+                                                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
+
     }
 
     @Override
     public void ShowNewItemScreen() {
+        ShowNewItemScreen(null);
+    }
+
+    @Override
+    public void ShowNewItemScreen(Item item) {
         ResizeAnimation resizeAnimation = new ResizeAnimation(
                 mAddNewItemContainer,
                 (int)getResources().getDimension(R.dimen.addItemHeightOpen),
@@ -106,7 +119,7 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         resizeAnimation.setDuration(500);
         mAddNewItemContainer.startAnimation(resizeAnimation);
 
-        mAddNewItemView.ShowScreen();
+        mAddNewItemView.ShowScreen(item);
     }
 
     @Override
@@ -125,6 +138,11 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
     @Override
     public void AddItem(Item item) {
         mAdapter.AddNewItem(item);
+    }
+
+    @Override
+    public void UpdateItem(Item item) {
+        mAdapter.UpdateItem(item);
     }
 
     @Override
@@ -156,6 +174,19 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
                 return true;
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        int itemPosition = viewHolder.getAdapterPosition();
+        if (direction == ItemTouchHelper.LEFT) {
+            Item item = mAdapter.GetItemAtPosition(itemPosition);
+            ShowNewItemScreen(item);
+            mAdapter.notifyItemChanged(itemPosition);
+        }
+        else {
+            mAdapter.RemoveItem(itemPosition);
         }
     }
 }

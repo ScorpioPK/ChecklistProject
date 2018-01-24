@@ -30,6 +30,9 @@ public class Item {
     public String mMeasurementUnit = Defines.DEFAULT_STRING;
     public String mDetails = Defines.DEFAULT_STRING;
     public int mState = TO_BUY;
+    public int mTag = Defines.DEFAULT_VALUE;
+
+    public static int sUniqueTag = 0;
 
     public Item(String name, int quantity, String packType, int packSize, String measurementUnit, String details, int state) {
         mName = name;
@@ -39,6 +42,7 @@ public class Item {
         mMeasurementUnit = measurementUnit;
         mDetails = details;
         mState = state;
+        mTag = GetUniqueTag();
     }
 
     public Item(JSONWrapper jsonObject) {
@@ -52,6 +56,7 @@ public class Item {
         if (mState == Defines.DEFAULT_VALUE) {
             mState = TO_BUY;
         }
+        mTag = GetUniqueTag();
     }
 
     public JSONObject ToJson() {
@@ -69,5 +74,9 @@ public class Item {
         jsonObject.PutIntInJSON(JSON_STATE, mState);
 
         return jsonObject.GetJSON();
+    }
+
+    public int GetUniqueTag() {
+        return sUniqueTag++;
     }
 }

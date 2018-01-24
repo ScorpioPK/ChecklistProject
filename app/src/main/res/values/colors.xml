@@ -12,4 +12,6 @@
     <color name="itemToBuy">#ffffff</color>
     <color name="itemBought">#4d000000</color>
     <color name="itemAssigned">#ffff00</color>
+    <color name="itemBackgroundLeft">#ff0000</color>
+    <color name="itemBackgroundRight">#0000ff</color>
 </resources>

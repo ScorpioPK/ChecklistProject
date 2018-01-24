@@ -2,7 +2,7 @@
 <resources>
     <dimen name="fieldHeight">35dp</dimen>
     <dimen name="titleHeight">40dp</dimen>
-    <dimen name="addItemHeightClosed">55dp</dimen>
+    <dimen name="addItemHeightClosed">0dp</dimen>
     <dimen name="addItemHeightOpen">145dp</dimen>
     <dimen name="defaultPadding">10dp</dimen>
     <dimen name="defaultMargin">20dp</dimen>

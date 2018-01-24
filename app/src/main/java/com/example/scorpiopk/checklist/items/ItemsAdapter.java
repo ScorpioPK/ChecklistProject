@@ -1,11 +1,13 @@
 package com.example.scorpiopk.checklist.items;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,15 +40,19 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         // each data item is just a string in this case
         public TextView mNameTextview;
         public TextView mDetailsTextview;
-        public LinearLayout mCellLayout;
         public LinearLayout mItemLayout;
-        public ViewHolder(LinearLayout v)
+        public CardView mItemCardview;
+        public TextView mItemBackgroundLeft;
+        public TextView mItemBackgroundRight;
+        public ViewHolder(FrameLayout v)
         {
             super(v);
-            mCellLayout = v;
-            mItemLayout = (LinearLayout)mCellLayout.findViewById(R.id.item_layout);
-            mNameTextview = (TextView)mCellLayout.findViewById(R.id.item_name_textview);
-            mDetailsTextview = (TextView)mCellLayout.findViewById(R.id.item_details_textview);
+            mItemLayout = (LinearLayout)v.findViewById(R.id.item_layout);
+            mItemCardview = (CardView)v.findViewById(R.id.item_cardview);
+            mItemBackgroundLeft = (TextView)v.findViewById(R.id.item_background_left);
+            mItemBackgroundRight = (TextView)v.findViewById(R.id.item_background_right);
+            mNameTextview = (TextView)v.findViewById(R.id.item_name_textview);
+            mDetailsTextview = (TextView)v.findViewById(R.id.item_details_textview);
         }
     }
 
@@ -67,7 +73,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
     {
         // create a new view
 
-        LinearLayout v = (LinearLayout) LayoutInflater.from(parent.getContext())
+        FrameLayout v = (FrameLayout) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_layout_file, parent, false);
         // set the view's size, margins, paddings and layout parameters
         v.setClickable(true);
@@ -122,8 +128,10 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
 
     public void AddNewItem(Item item)
     {
+        // Need to check if an item with same name already exists. We show a pop up and go back to edit
+        // Maybe ask to override?
         mDataset.add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(mDataset.size() - 1);
         SaveToFile();
     }
 
@@ -151,6 +159,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 JSONWrapper jsonObject = new JSONWrapper(jsonArray.getJSONObject(i));
                 mDataset.add(new Item(jsonObject));
             }
+            notifyDataSetChanged();
         } catch (JSONException e)
         {
             e.printStackTrace();
@@ -195,6 +204,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         SaveToFile();
     }
 
+    public void RemoveItem(int itemPosition) {
+        mDataset.remove(itemPosition);
+        notifyItemRemoved(itemPosition);
+        SaveToFile();
+    }
+
     public void SetItemBackgroundForState(LinearLayout itemLayout, int state) {
         switch (state) {
             case Item.TO_BUY:
@@ -236,6 +251,22 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
         }
         notifyDataSetChanged();
         SaveToFile();
+    }
+
+    public void UpdateItem(Item item) {
+        for (int index = 0; index < mDataset.size(); index++) {
+            Item listItem = mDataset.get(index);
+            if (listItem.mTag == item.mTag) {
+                mDataset.remove(index);
+                mDataset.add(index, item);
+                notifyItemChanged(index);
+                break;
+            }
+        }
+    }
+
+    public Item GetItemAtPosition(int position) {
+        return mDataset.get(position);
     }
 
     public class ItemsComparator implements Comparator<Item> {
