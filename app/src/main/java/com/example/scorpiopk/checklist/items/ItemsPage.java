@@ -17,7 +17,6 @@ import com.example.scorpiopk.checklist.R;
 import com.example.scorpiopk.checklist.utils.ResizeAnimation;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -86,7 +85,6 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
 
         mDataset = new ArrayList<>();
         mRecyclerView = (RecyclerView) findViewById(R.id.items_recycler_view);
-
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
