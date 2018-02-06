@@ -87,4 +87,13 @@
         android:layout_marginRight="60dp"
         android:stateListAnimator="@null"/>
 
+    <View
+        android:id="@+id/list_cover"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_marginTop="185dp"
+        android:color="@android:color/transparent"
+        android:clickable="true"
+        android:visibility="gone"/>
+
 </FrameLayout>

@@ -6,6 +6,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ActionProvider;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,7 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
     TextView mTitleView = null;
     private LinearLayout mOptionsButton = null;
     PopupMenu mOptionsMenu = null;
+    View mListCover = null;
 
     public ItemsPage(Context context, String listName) {
         super(context);
@@ -111,6 +113,9 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
                                                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mRecyclerView);
 
+        mListCover = findViewById(R.id.list_cover);
+        mListCover.setOnClickListener(this);
+
     }
 
     @Override
@@ -127,6 +132,22 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
                 addItemHeightOpen,
                 addItemHeightClosed);
         resizeAnimation.setDuration(500);
+        resizeAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mListCover.setVisibility(VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
         mAddNewItemContainer.startAnimation(resizeAnimation);
 
         mPlusButton.animate().translationY(addItemHeightOpen).setDuration(500).start();
@@ -149,6 +170,8 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         mPlusButton.animate().translationY(0).setDuration(500).start();
         mPlusButton.animate().rotation(0).setDuration(500).start();
 
+        mListCover.setVisibility(GONE);
+
         mAddNewItemView.HideScreen();
     }
 
@@ -166,10 +189,18 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_button:
-                MainActivity.GetCurrentActivity().onBackPressed();
+                if (mAddNewItemView.IsOpen()) {
+                    HideNewItemScreen();
+                }
+                else {
+                    MainActivity.GetCurrentActivity().onBackPressed();
+                }
                 break;
             case R.id.options_button:
                 mOptionsMenu.show();//showing popup menu
+                break;
+            case R.id.list_cover:
+                HideNewItemScreen();
                 break;
         }
     }
