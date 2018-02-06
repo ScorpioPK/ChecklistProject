@@ -184,7 +184,6 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ViewHolder> 
                 break;
         }
         SetItemBackgroundForState(itemLayout, item.mState);
-        (v.findViewById(R.id.item_icon)).setVisibility(item.mState == Item.BOUGHT ? View.VISIBLE : View.GONE);
         SaveToFile();
         return true;
     }

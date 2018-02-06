@@ -13,11 +13,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <Button
+            <LinearLayout
                 android:id="@+id/back_button"
                 android:layout_width="@dimen/titleHeight"
                 android:layout_height="@dimen/titleHeight"
-                android:background="@drawable/plus_button_background"/>
+                android:padding="6dp"
+                android:background="@drawable/bar_button_background"
+                android:clickable="true">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/back_button"/>
+            </LinearLayout>
             <TextView
                 android:id="@+id/title_textview"
                 android:layout_width="match_parent"
@@ -29,11 +36,18 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:layout_weight="1"/>
-            <Button
+            <LinearLayout
                 android:id="@+id/options_button"
                 android:layout_width="@dimen/titleHeight"
                 android:layout_height="@dimen/titleHeight"
-                android:background="@drawable/plus_button_background"/>
+                android:padding="6dp"
+                android:background="@drawable/bar_button_background"
+                android:clickable="true">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/options_button"/>
+                </LinearLayout>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -68,8 +82,9 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:background="@drawable/plus_button_background"
-        android:layout_gravity="center_horizontal|bottom"
-        android:layout_marginBottom="40dp"
+        android:layout_gravity="right|top"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="60dp"
         android:stateListAnimator="@null"/>
 
 </FrameLayout>

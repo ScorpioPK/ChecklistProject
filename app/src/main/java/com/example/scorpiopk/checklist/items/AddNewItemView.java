@@ -200,6 +200,10 @@ public class AddNewItemView extends LinearLayout {
         MainActivity.GetCurrentActivity().HideKeyboard();
     }
 
+    public boolean IsOpen() {
+        return mIsOpen;
+    }
+
     private int GetInt(EditText editText) {
         if(editText.getText().toString().length() > 0) {
             return Integer.parseInt(editText.getText().toString());

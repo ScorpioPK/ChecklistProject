@@ -9,6 +9,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -36,9 +40,9 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
     LinearLayout mAddNewItemContainer = null;
     AddNewItemView mAddNewItemView = null;
     List<Item> mDataset = null;
-    private Button mBackButton = null;
+    private LinearLayout mBackButton = null;
     TextView mTitleView = null;
-    private Button mOptionsButton = null;
+    private LinearLayout mOptionsButton = null;
     PopupMenu mOptionsMenu = null;
 
     public ItemsPage(Context context, String listName) {
@@ -52,14 +56,14 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         LayoutInflater layoutInflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         layoutInflater.inflate(R.layout.items_page, this);
 
-        mBackButton = (Button) findViewById(R.id.back_button);
+        mBackButton = (LinearLayout) findViewById(R.id.back_button);
         mBackButton.setOnClickListener(this);
 
         mTitleView = (TextView)findViewById(R.id.title_textview);
         mTitleView.setText(mListName);
         mTitleView.requestFocus();
 
-        mOptionsButton = (Button) findViewById(R.id.options_button);
+        mOptionsButton = (LinearLayout) findViewById(R.id.options_button);
         mOptionsButton.setOnClickListener(this);
         mOptionsMenu = new PopupMenu(MainActivity.GetCurrentActivity(), mOptionsButton);
         //Inflating the Popup using xml file
@@ -82,7 +86,12 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         mPlusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowNewItemScreen();
+                if (mAddNewItemView.IsOpen()) {
+                    HideNewItemScreen();
+                }
+                else {
+                    ShowNewItemScreen();
+                }
             }
         });
 
@@ -111,13 +120,17 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
 
     @Override
     public void ShowNewItemScreen(Item item) {
+        final int addItemHeightOpen = (int)getResources().getDimension(R.dimen.addItemHeightOpen);
+        int addItemHeightClosed = (int)getResources().getDimension(R.dimen.addItemHeightClosed);
         ResizeAnimation resizeAnimation = new ResizeAnimation(
                 mAddNewItemContainer,
-                (int)getResources().getDimension(R.dimen.addItemHeightOpen),
-                (int)getResources().getDimension(R.dimen.addItemHeightClosed)
-        );
+                addItemHeightOpen,
+                addItemHeightClosed);
         resizeAnimation.setDuration(500);
         mAddNewItemContainer.startAnimation(resizeAnimation);
+
+        mPlusButton.animate().translationY(addItemHeightOpen).setDuration(500).start();
+        mPlusButton.animate().rotation(-225.0f).setDuration(500).start();
 
         mAddNewItemView.ShowScreen(item);
     }
@@ -132,6 +145,10 @@ public class ItemsPage extends FrameLayout implements AddItemCallback, View.OnCl
         resizeAnimation.setDuration(500);
         mAddNewItemContainer.startAnimation(resizeAnimation);
         mTitleView.requestFocus();
+
+        mPlusButton.animate().translationY(0).setDuration(500).start();
+        mPlusButton.animate().rotation(0).setDuration(500).start();
+
         mAddNewItemView.HideScreen();
     }
 
